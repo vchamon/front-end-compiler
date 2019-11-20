@@ -1,0 +1,74 @@
+.app {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app-header {
+  background: bg-dark;
+  padding: 15px 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.app-header-menu {
+  text-align: right;
+
+  ul {
+    li {
+      display: inline-block;
+      margin-left: 25px;
+      margin-top: 20px;
+
+      :hover {
+        color: #FFFFFF !important;
+      }
+
+      a {
+        background-color: transparent;
+        color: #000;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 20px;
+        letter-spacing: .1em;
+        padding: 10px 0;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all .3s ease;
+      }
+    }
+  }
+}
+
+.app-body {
+  border-radius: 5px;
+  box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
+  max-height: 500px;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.app-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
+
+.code {
+  border: 1px solid black;
+  border-radius: 5px;
+  outline: none;
+}
+
+.error {
+  border-color: red;
+}
+
+.text-error {
+  color: red;
+}
