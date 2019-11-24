@@ -3,72 +3,57 @@
 }
 
 .app-header {
-  background: bg-dark;
-  padding: 15px 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 10;
-}
-
-.app-header-menu {
-  text-align: right;
-
-  ul {
-    li {
-      display: inline-block;
-      margin-left: 25px;
-      margin-top: 20px;
-
-      :hover {
-        color: #FFFFFF !important;
-      }
-
-      a {
-        background-color: transparent;
-        color: #000;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 20px;
-        letter-spacing: .1em;
-        padding: 10px 0;
-        text-decoration: none;
-        text-transform: uppercase;
-        transition: all .3s ease;
-      }
-    }
-  }
+  background: #343a40;
 }
 
 .app-body {
   border-radius: 5px;
   box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
-  max-height: 500px;
+  min-height: 200px;
   padding: 20px;
   text-align: center;
   width: 100%;
 }
 
-.app-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: red;
-  color: white;
-  text-align: center;
+svg {
+  height: 20px;
+  width: 20px;
 }
 
-.code {
-  border: 1px solid black;
-  border-radius: 5px;
+input {
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: none;
+  border-top: 1px solid gray;
+  border-radius: 5px 0 0 5px;
   outline: none;
+  padding: 5px 0 5px 5px;
+}
+
+.status {
+  background: none;
+  border-bottom: 1px solid gray;
+  border-left: none;
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  border-radius: 0 5px 5px 0;
+  height: 36px;
+  outline: none;
+  padding: 5px;
+}
+
+.success {
+  border-color: #25ae88;
 }
 
 .error {
-  border-color: red;
+  border-color: #d75a4a;
+}
+
+.text-success {
+  color: #25ae88;
 }
 
 .text-error {
-  color: red;
+  color: #d75a4a;
 }

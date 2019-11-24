@@ -1,195 +1,176 @@
-const LETRA = "[a-zA-Z]";
-const NUMERO = "[0-9]";
-const OPERADOR = "[+\\-*/]";
-const ESPACO = ' ';
+const LETTER = "[a-zA-Z]";
+const NUMBER = "[0-9]";
+const OPERATOR = "[+\\-*/]";
+const WHITESPACE = ' ';
 
-// COMPARA A LETRA DIGITADA COM O VALOR DA VARIAVEL
-function compara(character, str) {
-	return character.match(str);
-}
+export function validate (codeSnippet) {
+	let position = 0;
 
-//VERIFICAR POSI��O VAZIA
-function posicaoVazia(trecho, posicao) {
-	return (posicao + 1) >= trecho.length;
-}
+	for (let i = 0; i < codeSnippet.length;){
+		switch (position) {
 
-export function validacao(trecho) {
-	let posi = 0;
-
-	for(let i = 0; i < trecho.length;){
-		switch (posi) {
-		
 		case 0:
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if (trecho.charAt(i) === '/') {
-				posi = 1;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 1;
 				i++;
-			} else if (compara(trecho.charAt(i), LETRA)) {
-				posi = 6;
+			} else if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 6;
 				i++;
 			} else {
 				return true;
 			}
 			break;
-			
 
 		case 1:
-			if (trecho.charAt(i) === '/') {
-				posi = 5;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 5;
 				i++;
-			} else if (trecho.charAt(i) === '*') {
-				posi = 2;
+			} else if (codeSnippet.charAt(i) === '*') {
+				position = 2;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-		
 
 		case 2: 
-			while (i < trecho.length && trecho.charAt(i) != '*') {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) !== '*') {
 				i++;
 			}
-			posi = 3;
+			position = 3;
 			i++;
 			break;
 
 		case 3: 
-			while (i < trecho.length && trecho.charAt(i) === '*') {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === '*') {
 				i++;
 			}
-			if (trecho.charAt(i) != '/') {
-				posi = 2;
+			if (codeSnippet.charAt(i) !== '/') {
+				position = 2;
 				i++;
 			} else {
-				posi = 4;
+				position = 4;
 				i++;
 
-				if (posicaoVazia(trecho, i)) {
+				if (emptyPosition(codeSnippet, i)) {
 					return true;
 				}
 			}
 			break;
-		
 
 		case 4:
-			while (trecho.charAt(i) === ESPACO) {
+			while (codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if ( iniComent(trecho, i)) {
-				posi = 26;
+			if (startComment(codeSnippet, i)) {
+				position = 26;
 				i++;
-			} else if (compara(trecho.charAt(i), LETRA)) {
-				posi = 6;
+			} else if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 6;
 				i++;
+			} else {
+				return emptyPosition(codeSnippet, i);
 			}
-
-			return posicaoVazia(trecho, i);
+			break;
 
 		case 5:
 			return true;
-			
 
 		case 6:
-			while (i < trecho.length && (compara(trecho.charAt(i), LETRA) || compara(trecho.charAt(i), NUMERO))) {
+			while (i < codeSnippet.length && (compare(codeSnippet.charAt(i), LETTER) || compare(codeSnippet.charAt(i), NUMBER))) {
 				i++;
 			}
-			if (trecho.charAt(i) === '/') {
-				posi = 7;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 7;
 				i++;
-			} else if (trecho.charAt(i) === '=') {
-				posi = 13;
+			} else if (codeSnippet.charAt(i) === '=') {
+				position = 13;
 				i++;
-			} else if (trecho.charAt(i) === ESPACO) {
-				posi = 9;
+			} else if (codeSnippet.charAt(i) === WHITESPACE) {
+				position = 9;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 7:
-			if (trecho.charAt(i) === '*') {
-				posi = 8;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 8;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 8: 
-			if (trecho.charAt(i) === '*') {
+			if (codeSnippet.charAt(i) === '*') {
 				i++;
-				if (trecho.charAt(i) === '/') {
-					posi = 9;
+				if (codeSnippet.charAt(i) === '/') {
+					position = 9;
 					i++;
 				}
 			} else {
 				i++;
 			}
 			break;
-		
 
 		case 9:
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if (compara(trecho.charAt(i), LETRA)) {
-				posi = 10;
+			if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 10;
 				i++;
-			} else if (trecho.charAt(i) === '=') {
-				posi = 13;
+			} else if (codeSnippet.charAt(i) === '=') {
+				position = 13;
 				i++;
-			} else if (trecho.charAt(i) === '/') {
-				posi = 7;
+			} else if (codeSnippet.charAt(i) === '/') {
+				position = 7;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-		
 
 		case 10:
-			while (i < trecho.length && (compara(trecho.charAt(i), LETRA) || compara(trecho.charAt(i), NUMERO))) {
+			while (i < codeSnippet.length && (compare(codeSnippet.charAt(i), LETTER) || compare(codeSnippet.charAt(i), NUMBER))) {
 				i++;
 			}
-			if (trecho.charAt(i) === '=') {
-				posi = 13;
+			if (codeSnippet.charAt(i) === '=') {
+				position = 13;
 				i++;
-			} else if (trecho.charAt(i) === ',') {
-				posi = 11;
+			} else if (codeSnippet.charAt(i) === ',') {
+				position = 11;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 11:
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if (compara(trecho.charAt(i), LETRA)) {
-				posi = 10;
+			if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 10;
 				i++;
-			} else if (trecho.charAt(i) === '/') {
-				posi = 21;
+			} else if (codeSnippet.charAt(i) === '/') {
+				position = 21;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 12:
-			if (trecho.charAt(i) === '*') {
+			if (codeSnippet.charAt(i) === '*') {
 				i++;
-				if (trecho.charAt(i) === '/') {
-					posi = 11;
+				if (codeSnippet.charAt(i) === '/') {
+					position = 11;
 					i++;
 				}
 			} else {
@@ -198,178 +179,169 @@ export function validacao(trecho) {
 			break;
 
 		case 13: 
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if (trecho.charAt(i) === '/') {
-				posi = 22;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 22;
 				i++;
-			} else if (compara(trecho.charAt(i), LETRA)) {
-				posi = 15;
+			} else if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 15;
 				i++;
-			} else if (compara(trecho.charAt(i), NUMERO)) {
-				posi = 17;
+			} else if (compare(codeSnippet.charAt(i), NUMBER)) {
+				position = 17;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 14:
-			if (trecho.charAt(i) === '*') {
+			if (codeSnippet.charAt(i) === '*') {
 				i++;
-				if (trecho.charAt(i) === '/') {
-					posi = 13;
+				if (codeSnippet.charAt(i) === '/') {
+					position = 13;
 					i++;
 				}
 			} else {
 				i++;
 			}
 			break;
-			
 
 		case 15:
-			while (i < trecho.length && (compara(trecho.charAt(i), LETRA) || compara(trecho.charAt(i), NUMERO))) {
+			while (i < codeSnippet.length && (compare(codeSnippet.charAt(i), LETTER) || compare(codeSnippet.charAt(i), NUMBER))) {
 				i++;
 			}
-			if (trecho.charAt(i) === '/') {
-				posi = 23;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 23;
 				i++;
-			} else if (trecho.charAt(i) === ';') {
-				posi = 4;
+			} else if (codeSnippet.charAt(i) === ';') {
+				position = 4;
 				i++;
 
-				if (posicaoVazia(trecho, i)) {
+				if (emptyPosition(codeSnippet, i)) {
 					return true;
 				}
-			} else if (compara(trecho.charAt(i), OPERADOR)) {
-				posi = 16;
+			} else if (compare(codeSnippet.charAt(i), OPERATOR)) {
+				position = 16;
 				i++;
-			} else if (trecho.charAt(i) === ESPACO) {
-				posi = 20;
+			} else if (codeSnippet.charAt(i) === WHITESPACE) {
+				position = 20;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 16:
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if ( iniComent(trecho, i)) {
-				posi = 27;
+			if (startComment(codeSnippet, i)) {
+				position = 27;
 				i++;
-			} else if (compara(trecho.charAt(i), LETRA)) {
-				posi = 15;
+			} else if (compare(codeSnippet.charAt(i), LETTER)) {
+				position = 15;
 				i++;
-			} else if (compara(trecho.charAt(i), NUMERO)) {
-				posi = 17;
+			} else if (compare(codeSnippet.charAt(i), NUMBER)) {
+				position = 17;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 17:
-			while (i < trecho.length && compara(trecho.charAt(i), NUMERO)) {
+			while (i < codeSnippet.length && compare(codeSnippet.charAt(i), NUMBER)) {
 				i++;
 			}
-			if (compara(trecho.charAt(i), OPERADOR)) {
-				posi = 16;
+			if (compare(codeSnippet.charAt(i), OPERATOR)) {
+				position = 16;
 				i++;
-			} else if (trecho.charAt(i) === ';') {
-				posi = 4;
+			} else if (codeSnippet.charAt(i) === ';') {
+				position = 4;
 				i++;
 
-				if (posicaoVazia(trecho, i)) {
+				if (emptyPosition(codeSnippet, i)) {
 					return true;
 				}
-			} else if (trecho.charAt(i) === '.') {
-				posi = 18;
+			} else if (codeSnippet.charAt(i) === '.') {
+				position = 18;
 				i++;
-			} else if (trecho.charAt(i) === '/') {
-				posi = 24;
+			} else if (codeSnippet.charAt(i) === '/') {
+				position = 24;
 				i++;
-			} else if (trecho.charAt(i) === ESPACO) {
-				posi = 20;
+			} else if (codeSnippet.charAt(i) === WHITESPACE) {
+				position = 20;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-		
 
 		case 18: 
-			while (i < trecho.length && compara(trecho.charAt(i), NUMERO)) {
+			while (i < codeSnippet.length && compare(codeSnippet.charAt(i), NUMBER)) {
 				i++;
 			}
-			if (trecho.charAt(i) === '/') {
-				posi = 24;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 24;
 				i++;
-			} else if (trecho.charAt(i) === ESPACO) {
-				posi = 20;
+			} else if (codeSnippet.charAt(i) === WHITESPACE) {
+				position = 20;
 				i++;
-			} else if (trecho.charAt(i) === ';') {
-				posi = 4;
+			} else if (codeSnippet.charAt(i) === ';') {
+				position = 4;
 				i++;
 
-				if (posicaoVazia(trecho, i)) {
+				if (emptyPosition(codeSnippet, i)) {
 					return true;
 				}
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 19:
-			if (trecho.charAt(i) === '*') {
-				posi = 25;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 25;
 				i++;
 			} else {
-
 				i++;
 			}
 			break;
-			
 
 		case 20:
-			while (i < trecho.length && trecho.charAt(i) === ESPACO) {
+			while (i < codeSnippet.length && codeSnippet.charAt(i) === WHITESPACE) {
 				i++;
 			}
-			if (trecho.charAt(i) === ';') {
-				posi = 4;
+			if (codeSnippet.charAt(i) === ';') {
+				position = 4;
 				i++;
 
-				if (posicaoVazia(trecho, i)) {
+				if (emptyPosition(codeSnippet, i)) {
 					return true;
 				}
-			} else if (compara(trecho.charAt(i), OPERADOR)) {
-				posi = 16;
+			} else if (compare(codeSnippet.charAt(i), OPERATOR)) {
+				position = 16;
 				i++;
-			} else if (trecho.charAt(i) === '/') {
-				posi = 24;
+			} else if (codeSnippet.charAt(i) === '/') {
+				position = 24;
 				i++;
 			}
 			break;
 
 		case 21:
-			if (trecho.charAt(i) === '*') {
-				posi = 12;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 12;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
 
 		case 22:
-			if (trecho.charAt(i) === '*') {
-				posi = 14;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 14;
 				i++;
 			} else {
 				return false;
@@ -377,62 +349,67 @@ export function validacao(trecho) {
 			break;
 
 		case 23:
-			if (trecho.charAt(i) === '*') {
-				posi = 15;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 15;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
+
 		case 24:
-			if (trecho.charAt(i) === '*') {
-				posi = 19;
+			if (codeSnippet.charAt(i) === '*') {
+				position = 19;
 				i++;
 			} else {
 				return false;
 			}
 			break;
-			
+
 		case 25:
-			if (trecho.charAt(i) === '/') {
-				posi = 20;
+			if (codeSnippet.charAt(i) === '/') {
+				position = 20;
 				i++;
 			} else {
-				posi = 19;
+				position = 19;
 				i++;
 			}
 			break;
-			
+
 		case 26:
-			if (fimComent(trecho, i)) {
-				posi = 4;
+			if (endComment(codeSnippet, i)) {
+				position = 4;
 				i += 2;
 			} else {
 				i++;
 			}
 			break;
-			
+
 		case 27:
-			if (fimComent(trecho, i)) {
-				posi = 16;
+			if (endComment(codeSnippet, i)) {
+				position = 16;
 				i += 2;
 			} else {
 				i++;
 			}
 			break;
-			
 		}
-
 	}
-
 	return false;
 }
 
-function iniComent(trecho, i) {
-	return trecho.charAt(i) === '/' && (i + 1) < trecho.length && trecho.charAt(i + 1) === '*';
+function compare (character, codeSnippet) {
+	return character.match(codeSnippet);
 }
 
-function fimComent(trecho, i) {
-	return trecho.charAt(i) === '*' && (i + 1) < trecho.length && trecho.charAt(i + 1) === '/';
+function emptyPosition (codeSnippet, position) {
+	return (position + 1) >= codeSnippet.length;
+}
+
+function startComment(codeSnippet, i) {
+	return codeSnippet.charAt(i) === '/' && (i + 1) < codeSnippet.length && codeSnippet.charAt(i + 1) === '*';
+}
+
+function endComment(codeSnippet, i) {
+	return codeSnippet.charAt(i) === '*' && (i + 1) < codeSnippet.length && codeSnippet.charAt(i + 1) === '/';
 }
