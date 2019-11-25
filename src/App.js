@@ -31,6 +31,7 @@ function App() {
       <div className='container'>
         <div className='row mt-5 mb-5'>
           <div className='app-body col-8 offset-2'>
+            <h2 className='mb-5'>Analisador Léxico</h2>
             <form>
               <input
                 className={empty ? '' : (compile ? 'success' : 'error')}
@@ -71,6 +72,15 @@ function App() {
                   </small>
                 : <div />
             }
+          </div>
+        </div>
+        <div className='row mt-5 mb-5'>
+          <div className='app-body col-8 offset-2'>
+            <h5 className='mb-4'>Auto Instrucional - Compiladores</h5>
+            <li>João Bosco Mesquita</li>
+            <li>Lucas Carneiro</li>
+            <li>Lucas Tadeu</li>
+            <li>Vitor Chamon</li>
           </div>
         </div>
       </div>

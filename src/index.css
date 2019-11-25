@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.navBarWrapper {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+}
+
+.bar {
+  height: 8.02%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bar li {
+  display: inline-block;
+}
